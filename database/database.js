@@ -1,0 +1,26 @@
+const { Sequelize } = require("sequelize");
+
+const connection = new Sequelize(
+    process.env.DB_NAME, // nome reservado para o database
+    process.env.DB_USER, // usuário reservado para conexão
+    process.env.DB_PASSWORD, // senha para acesso
+    {
+        // informações adicionais da conexão
+        host: process.env.DB_HOST, // endereço (banco local)
+        dialect: "mysql", // o banco utilizado
+    }
+);
+
+// Estabelecer conexão usando o objeto
+async function authenticate(connection) {
+    try {
+      // Tentar estabelecer conexão (usar as informações passadas acima)
+      await connection.authenticate();
+      console.log("Conexão estabelecida com sucesso!");
+    } catch (err) {
+      // err = objeto que guarda detalhes sobre o erro que aconteceu
+      console.log("Um erro inesperado aconteceu: ", err);
+    }
+  }
+  
+  module.exports = { connection, authenticate };
