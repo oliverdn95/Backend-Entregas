@@ -12,6 +12,14 @@ router.get("/entregadores", async (req, res) => {
     res.json(listasEntregador);
 });
 
+//Pesquisa todos entregadores excluidos
+router.get("/entregadores/excluidos", async (req, res) => {
+    const listasEntregador = await Entregadores.findAll({ paranoid:false });
+    
+    res.json(listasEntregador);
+});
+
+
 //Pesquisa um entregador
 router.get("/entregadores/:id", async (req, res) => {
     const listaEntregador = await Entregadores.findByPk(req.params.id);
@@ -107,8 +115,26 @@ router.delete("/entregadores/:id", async (req, res) => {
     }
 });
 
+//Deleta um entregador PERMANENTEMENTE
+router.delete("/entregadores/deletar/:id", async (req, res) => {
+
+    try{
+        const entregadorEncontrado = await Entregadores.findByPk(req.params.id);
+
+        if(entregadorEncontrado){
+            entregadorEncontrado.destroy({ force:true });
+            res.status(200).json({ message: "Entregador deletado!" });
+        }else{
+            res.status(404).json({ message: "Entregador não encontrado." });
+        }
+    }catch(err){
+        console.log(err);
+        res.status(500).json({ message: "Ocorreu um erro :(" });
+    }
+});
+
 //Restaurar o pedido deletado(Paranoid)
-router.delete("/entregadoresRestaurar/:id", async (req, res) => {
+router.put("/entregadores/restaurar/:id", async (req, res) => {
 
     try {
         const restaurarEntregador = await Entregadores.findByPk(req.params.id, { paranoid: false }); // buscando o entregador excluído sem o Paranoid

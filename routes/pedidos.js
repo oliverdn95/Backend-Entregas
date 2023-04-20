@@ -12,6 +12,13 @@ router.get("/pedidos", async (req, res) => {
     res.json(listarPedidos);
 });
 
+//Pesquisa todos pedidos excluidos
+router.get("/pedidos/excluidos", async (req, res) => {
+    const listarPedidos = await Pedidos.findAll({ paranoid:false });
+
+    res.json(listarPedidos);
+});
+
 //Pesquisa um pedidos
 router.get("/pedidos/:id", async (req, res) => {
     const listaPedido = await Pedidos.findByPk(req.params.id);
@@ -67,7 +74,6 @@ router.delete("/pedidos/:id", async (req, res) => {
 
     try {
         const pedidoEncontrado = await Pedidos.findByPk(req.params.id);
-
         if (pedidoEncontrado) {
             pedidoEncontrado.destroy();
             res.status(200).json({ message: "Pedido deletado!" });
@@ -99,10 +105,11 @@ router.delete("/pedidos/deletar/:id", async (req, res) => {
 });
 
 //Restaurar o pedido deletado(Paranoid)
-router.delete("/pedidosRestaurar/:id", async (req, res) => {
+router.put("/pedidos/restaurar/:id", async (req, res) => {
 
     try {
         const restaurarPedido = await Pedidos.findByPk(req.params.id, { paranoid: false }); // buscando o pedido excluído sem o Paranoid
+        console.log(restaurarPedido);
         if (restaurarPedido) {
             await restaurarPedido.restore(); // restaurando o pedido excluído
             res.status(200).json({ message: `Pedido com o id ${req.params.id} foi restaurado com sucesso!` });

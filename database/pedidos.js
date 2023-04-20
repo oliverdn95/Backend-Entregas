@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
+const { Sequelize } = require('sequelize');
 
 const Entregadores = require("./entregadores");
 
@@ -9,7 +10,7 @@ const Pedidos = connection.define("pedido", {
     refeicao: { type: DataTypes.STRING, allowNull: false },
     cliente: { type: DataTypes.STRING, allowNull: false },
     restaurante: { type: DataTypes.STRING, allowNull: false }
-}, { paranoid: true });
+}, { Sequelize, paranoid: true });
 
 Entregadores.hasMany(Pedidos, { onDelete: "CASCADE" });
 Pedidos.belongsTo(Entregadores);

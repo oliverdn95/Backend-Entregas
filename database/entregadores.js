@@ -7,7 +7,7 @@ const Entregadores = connection.define("entregadores", {
     veiculo: { type: DataTypes.STRING, allowNull: false },
     placa: { type: DataTypes.STRING, allowNull: false },
     telefone: { type: DataTypes.STRING, allowNull: false }
-}, { paranoid: true, deletedAt: 'softDelete' });
+}, { paranoid: true });
 
 // Pedidos.hasOne(Entregadores, { onDelete: "CASCADE" });
 // Entregadores.belongsTo(Pedidos);
