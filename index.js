@@ -61,6 +61,6 @@ const options = {
 
 
 app.listen(3000, () => {
-    connection.sync({ force: true });
+    connection.sync();
     console.log("Executando no http://localhost:3000/");
 });

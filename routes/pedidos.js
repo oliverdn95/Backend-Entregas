@@ -105,7 +105,7 @@ router.get("/pedidos", async (req, res) => {
  *   description: O API de Entrega de comida
  * /pedidos/excluidos:
  *   get:
- *     summary: Lista todos os Pedidos
+ *     summary: Lista todos os Pedidos inclusive os excluídos
  *     tags: [Pedidos]
  *     requestBody:
  *       required: false
@@ -129,7 +129,49 @@ router.get("/pedidos/excluidos", async (req, res) => {
     res.status(200).json(listarPedidos);
 });
 
-
+/**
+ * @swagger
+ * tags:
+ *   name: Pedidos
+ *   description: O API de Entrega de comida
+ * /pedidos/{id}:
+ *   get:
+ *     summary: Detalha um Pedido
+ *     tags: [Pedidos]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID do Pedido
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/pedidos/{id}'
+ *     responses:
+ *       200:
+ *         description: Detalhou um novo Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *       404:
+ *         description: Detalhou um novo Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *       500:
+ *         description: Aconteceu um erro ao tentar detalhar um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *  
+ */
 //Pesquisa um pedidos
 router.get("/pedidos/:id", async (req, res) => {
     const listaPedido = await Pedidos.findByPk(req.params.id);
@@ -191,6 +233,49 @@ router.post("/pedidos", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Pedidos
+ *   description: O API de Entrega de comida
+ * /pedidos/{id}:
+ *   put:
+ *     summary: Edita um Pedido
+ *     tags: [Pedidos]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID do Pedido
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/pedidos/{id}'
+ *     responses:
+ *       200:
+ *         description: Editou um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *       404:
+ *         description: Não foi possível encontrar o Pedido para editar.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *       500:
+ *         description: Aconteceu um erro ao tentar editar um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/{id}'
+ *  
+ */
 //Editar um pedido
 router.put("/pedidos/:id", async (req, res) => {
     const { endereco, urgencia, refeicao, cliente, restaurante } = req.body;
@@ -210,7 +295,6 @@ router.put("/pedidos/:id", async (req, res) => {
     }
 });
 
-
 /**
  * @swagger
  * tags:
@@ -218,8 +302,15 @@ router.put("/pedidos/:id", async (req, res) => {
  *   description: O API de Entrega de comida
  * /pedidos/{id}:
  *   delete:
- *     summary: Adiciona um novo Pedido
+ *     summary: Deleta um novo Pedido
  *     tags: [Pedidos]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID do Pedido
  *     requestBody:
  *       required: false
  *       content:
@@ -234,7 +325,7 @@ router.put("/pedidos/:id", async (req, res) => {
  *             schema:
  *               $ref: '#/pedidos/{id}'
  *       404:
- *         description: Não foi possível encontrar o Pedido.
+ *         description: Não foi possível encontrar o Pedido para deletar.
  *         content:
  *           application/json:
  *             schema:
@@ -264,6 +355,49 @@ router.delete("/pedidos/:id", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Pedidos
+ *   description: O API de Entrega de comida
+ * /pedidos/deletar/{id}:
+ *   delete:
+ *     summary: Deleta PERMANENTEMENTE um novo Pedido
+ *     tags: [Pedidos]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID do Pedido
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/pedidos/deletar/{id}'
+ *     responses:
+ *       200:
+ *         description: Deletou PERMANENTEMENTE um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/deletar/{id}'
+ *       404:
+ *         description: Não foi possível encontrar o Pedido para deletar PERMANENTEMENTE.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/deletar/{id}'
+ *       500:
+ *         description: Aconteceu um erro ao tentar deletar PERMANENTEMENTE um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/deletar/{id}'
+ *  
+ */
 //Deletar PERMANENTEMENTE um pedido
 router.delete("/pedidos/deletar/:id", async (req, res) => {
 
@@ -282,6 +416,49 @@ router.delete("/pedidos/deletar/:id", async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Pedidos
+ *   description: O API de Entrega de comida
+ * /pedidos/restaurar/{id}:
+ *   put:
+ *     summary: Restaura um Pedido deletado
+ *     tags: [Pedidos]
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID do Pedido
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/pedidos/restaurar/{id}'
+ *     responses:
+ *       200:
+ *         description: Restaurou um Pedido deletado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/restaurar/{id}'
+ *       404:
+ *         description: Não foi possível encontrar o Pedido deletado para restaurar.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/restaurar/{id}'
+ *       500:
+ *         description: Aconteceu um erro ao tentar restaurar um Pedido.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/pedidos/restaurar/{id}'
+ *  
+ */
 //Restaurar o pedido deletado(Paranoid)
 router.put("/pedidos/restaurar/:id", async (req, res) => {
 
