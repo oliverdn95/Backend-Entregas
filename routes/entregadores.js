@@ -9,14 +9,14 @@ const router = Router();
 router.get("/entregadores", async (req, res) => {
     const listasEntregador = await Entregadores.findAll();
     
-    res.json(listasEntregador);
+    res.status(200).json(listasEntregador);
 });
 
 //Pesquisa todos entregadores excluidos
 router.get("/entregadores/excluidos", async (req, res) => {
     const listasEntregador = await Entregadores.findAll({ paranoid:false });
     
-    res.json(listasEntregador);
+    res.status(200).json(listasEntregador);
 });
 
 
@@ -51,26 +51,6 @@ router.post("/entregadores", async (req, res) => {
             res.status(201).json(novoEntregador);
         }
 
-    }catch(err){
-        console.log(err);
-        res.status(500).json({ message: "Ocorreu um erro :(" });
-    }
-});
-
-//Atribui um pedido a um entregador
-router.put("/entregadores", async (req, res) => {
-    const { entregadoreId, pedidoId } = req.body;
-
-    try{
-        const entregadorEncontrado = await Entregadores.findByPk(entregadoreId);
-        const pedidoEncontrado = await Pedidos.findByPk(pedidoId);
-
-        if(entregadorEncontrado && pedidoEncontrado){
-            pedidoEncontrado.update({ entregadoreId });
-            res.status(200).json(pedidoEncontrado);
-        }else{
-            res.status(404).json({ message: "Entregador ou Pedido não encontrado." });
-        }
     }catch(err){
         console.log(err);
         res.status(500).json({ message: "Ocorreu um erro :(" });
